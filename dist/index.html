@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+    <script src="./react.js" defer></script>
+    <script src="./app.js" defer></script>
+    <style>
+        :root {
+            --country-select-item-height: 16px;
+            --country-select-items-height: 200px;
+            --country-select-item-vertical-padding: 4px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        .country-select-field {
+            border-radius: 2px;
+            border: solid 1px lightgray;
+            display: inline-block;
+            padding: 4px 8px;
+            padding-right: 20px;
+            margin-right: 10px;
+            background-image: url(./arrow.png);
+            background-repeat: no-repeat;
+            background-position: 95% 50%;
+        }
+
+        .country-select-popup {
+            position: absolute;
+            top: 37px;
+            width: 240px;
+            border: solid 1px lightgray;
+            border-radius: 2px;
+            box-shadow: 0px 1px 2px lightgray;
+        }
+
+        .country-select-country {
+            position: relative;
+            padding: var(--country-select-item-vertical-padding) 8px;
+            padding-left: 30px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: var(--country-select-item-height);
+        }
+
+        .country-select-countries-list {
+            width: 100%;
+            max-height: var(--country-select-items-height);
+            border-top: solid 1px lightgray;
+            overflow: auto;
+            cursor: default;
+        }
+
+        .country-select-search {
+            width: 100%;
+            font-size: 14px;
+            height: 35px;
+            font-family: Arial, Helvetica, sans-serif;
+            border: none;
+            padding-left: 30px;
+            background-image: url(./icon.png);
+            background-position: 10px 50%;
+            background-repeat: no-repeat;
+            outline: none;
+        }
+
+        .fi {
+            position: absolute;
+            left: 5px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+</html>
