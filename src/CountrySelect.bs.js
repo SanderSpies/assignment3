@@ -7,7 +7,6 @@ var $$Promise = require("@ryyppy/rescript-promise/src/Promise.bs.js");
 var Js_array = require("rescript/lib/js/js_array.js");
 var Js_string = require("rescript/lib/js/js_string.js");
 var Caml_array = require("rescript/lib/js/caml_array.js");
-var Caml_int32 = require("rescript/lib/js/caml_int32.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
 
 var $$Response = {};
@@ -257,7 +256,6 @@ function CountrySelect(props) {
   };
   var handleScroll = function (e) {
     var scrollTop = e.currentTarget.scrollTop;
-    Caml_int32.div(scrollTop, itemFullHeight);
     Curry._1(setState, (function (prev) {
             return {
                     error: prev.error,
@@ -369,55 +367,63 @@ function CountrySelect(props) {
                       className: "country-select-countries-list",
                       onMouseMove: handleMouseMove,
                       onScroll: handleScroll
-                    }, Js_array.map((function (item) {
+                    }, Js_array.mapi((function (item, i) {
                             var hover = state.cursor === item.value;
-                            return React.createElement("div", {
-                                        key: item.value,
-                                        "aria-selected": state.selected === item.value,
-                                        className: "country-select-country",
-                                        style: hover ? hoverStyle : noStyle,
-                                        alt: item.label,
-                                        value: item.value,
-                                        onClick: (function (e) {
-                                            Curry._1(setState, (function (prev) {
-                                                    return {
-                                                            error: prev.error,
-                                                            scrollTop: prev.scrollTop,
-                                                            ignoreMouse: prev.ignoreMouse,
-                                                            loading: prev.loading,
-                                                            expanded: false,
-                                                            query: prev.query,
-                                                            items: prev.items,
-                                                            selected: item.value,
-                                                            cursor: prev.cursor
-                                                          };
-                                                  }));
-                                          }),
-                                        onMouseDown: (function (prim) {
-                                            prim.preventDefault();
-                                          }),
-                                        onMouseEnter: (function (e) {
-                                            Curry._1(setState, (function (prev) {
-                                                    if (prev.ignoreMouse) {
-                                                      return prev;
-                                                    } else {
+                            var itemStart = Math.imul(i, itemFullHeight);
+                            var isVisible = (itemStart + itemFullHeight | 0) > state.scrollTop && itemStart < (state.scrollTop + 200 | 0);
+                            if (isVisible) {
+                              return React.createElement("div", {
+                                          key: item.value,
+                                          "aria-selected": state.selected === item.value,
+                                          className: "country-select-country",
+                                          style: hover ? hoverStyle : noStyle,
+                                          alt: item.label,
+                                          value: item.value,
+                                          onClick: (function (e) {
+                                              Curry._1(setState, (function (prev) {
                                                       return {
                                                               error: prev.error,
                                                               scrollTop: prev.scrollTop,
                                                               ignoreMouse: prev.ignoreMouse,
                                                               loading: prev.loading,
-                                                              expanded: prev.expanded,
+                                                              expanded: false,
                                                               query: prev.query,
                                                               items: prev.items,
-                                                              selected: prev.selected,
-                                                              cursor: item.value
+                                                              selected: item.value,
+                                                              cursor: prev.cursor
                                                             };
-                                                    }
-                                                  }));
-                                          })
-                                      }, React.createElement("span", {
-                                            className: "fi fi-" + item.value + ""
-                                          }), item.label);
+                                                    }));
+                                            }),
+                                          onMouseDown: (function (prim) {
+                                              prim.preventDefault();
+                                            }),
+                                          onMouseEnter: (function (e) {
+                                              Curry._1(setState, (function (prev) {
+                                                      if (prev.ignoreMouse) {
+                                                        return prev;
+                                                      } else {
+                                                        return {
+                                                                error: prev.error,
+                                                                scrollTop: prev.scrollTop,
+                                                                ignoreMouse: prev.ignoreMouse,
+                                                                loading: prev.loading,
+                                                                expanded: prev.expanded,
+                                                                query: prev.query,
+                                                                items: prev.items,
+                                                                selected: prev.selected,
+                                                                cursor: item.value
+                                                              };
+                                                      }
+                                                    }));
+                                            })
+                                        }, React.createElement("span", {
+                                              className: "fi fi-" + item.value + ""
+                                            }), item.label);
+                            } else {
+                              return React.createElement("div", {
+                                          className: "country-select-country"
+                                        });
+                            }
                           }), filteredItems))));
 }
 

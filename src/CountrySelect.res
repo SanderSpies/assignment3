@@ -207,7 +207,6 @@ let make = (~className: string, ~country: option<string>, ~onChange: string => u
 
   let handleScroll = e => {
     let scrollTop = ReactEvent.Synthetic.currentTarget(e)["scrollTop"]
-    let position = scrollTop / itemFullHeight
 
     setState(prev => {
       ...prev,
@@ -275,7 +274,7 @@ let make = (~className: string, ~country: option<string>, ~onChange: string => u
         onMouseMove={handleMouseMove}
         ref={ReactDOM.Ref.domRef(itemsRef)}>
         {React.array({
-          filteredItems |> map(item => {
+          filteredItems |> mapi((item, i) => {
             // let selectedClass = if state.selected == item["value"] {
             //   "selected"
             // } else {
@@ -286,36 +285,44 @@ let make = (~className: string, ~country: option<string>, ~onChange: string => u
             } else {
               false
             }
+            let itemStart = i * itemFullHeight
+            let isVisible =
+              itemStart + itemFullHeight > state.scrollTop &&
+                itemStart < state.scrollTop + itemsHeight
 
-            <div
-              className="country-select-country"
-              style={hover ? hoverStyle : noStyle}
-              key={item["value"]}
-              value={item["value"]}
-              ariaSelected={state.selected == item["value"]}
-              onMouseDown={ReactEvent.Mouse.preventDefault}
-              onClick={e => {
-                setState(prev => {
-                  ...prev,
-                  selected: item["value"],
-                  expanded: false,
-                })
-              }}
-              alt={item["label"]}
-              onMouseEnter={e =>
-                setState(prev =>
-                  if prev.ignoreMouse {
-                    prev
-                  } else {
-                    {
-                      ...prev,
-                      cursor: item["value"],
-                    }
-                  }
-                )}>
-              <span className={`fi fi-${item["value"]}`} />
-              {React.string(item["label"])}
-            </div>
+            {
+              isVisible
+                ? <div
+                    className="country-select-country"
+                    style={hover ? hoverStyle : noStyle}
+                    key={item["value"]}
+                    value={item["value"]}
+                    ariaSelected={state.selected == item["value"]}
+                    onMouseDown={ReactEvent.Mouse.preventDefault}
+                    onClick={e => {
+                      setState(prev => {
+                        ...prev,
+                        selected: item["value"],
+                        expanded: false,
+                      })
+                    }}
+                    alt={item["label"]}
+                    onMouseEnter={e =>
+                      setState(prev =>
+                        if prev.ignoreMouse {
+                          prev
+                        } else {
+                          {
+                            ...prev,
+                            cursor: item["value"],
+                          }
+                        }
+                      )}>
+                    <span className={`fi fi-${item["value"]}`} />
+                    {React.string(item["label"])}
+                  </div>
+                : <div className="country-select-country" />
+            }
           })
         })}
       </div>
