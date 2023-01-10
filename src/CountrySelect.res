@@ -321,7 +321,7 @@ let make = (~className: string, ~country: option<string>, ~onChange: string => u
                     <span className={`fi fi-${item["value"]}`} />
                     {React.string(item["label"])}
                   </div>
-                : <div className="country-select-country" />
+                : <div key={item["value"]} className="country-select-country" />
             }
           })
         })}

@@ -421,6 +421,7 @@ function CountrySelect(props) {
                                             }), item.label);
                             } else {
                               return React.createElement("div", {
+                                          key: item.value,
                                           className: "country-select-country"
                                         });
                             }
